@@ -28,12 +28,13 @@
 
         save: function(key, val, options) {
             var attrs = {};
-            options = options || {};
 
-            if(_.isObject(key)) {
+            // Handle both `"key", value` and `{key: value}` -style arguments.
+            if (key == null || typeof key === 'object') {
                 attrs = key;
+                options = val;
             } else {
-                attrs[key] = val;
+                (attrs = {})[key] = val;
             }
 
             var self = this;
@@ -41,6 +42,8 @@
 
             var _success = null;
             var _error = null;
+
+            options = options || {};
 
             if(options.success && _.isFunction(options.success)) { _success = options.success; }
             if(options.error && _.isFunction(options.error)) { _error = options.error; }
