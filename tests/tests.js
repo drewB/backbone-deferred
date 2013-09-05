@@ -85,6 +85,20 @@ test('Done Deferred', function() {
 
 });
 
+test('Retain success handler when object is passed in', function() {
+    var callback = this.spy();
+    var successHandler = this.spy();
+
+    myModel.save({}, {success: successHandler}).done(callback);
+
+    this.requests[0].respond(200, {"Content-Type": "application/json"}, JSON.stringify({
+        id: 1,
+        name: 'Test'
+    }));
+
+    ok(successHandler.called, 'Make sure the success handler was called.');
+});
+
 test('Fail Deferred', function() {
     var callback = this.spy();
 
